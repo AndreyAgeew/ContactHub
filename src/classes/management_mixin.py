@@ -6,7 +6,12 @@ from input_helpers import (
     get_surname,
     get_work_phone,
 )
-from validators import validate_name, validate_organization, validate_phone_number
+from validators import (
+    validate_name,
+    validate_organization,
+    validate_personal_phone_number,
+    validate_work_phone_number,
+)
 
 from .contact import Contact
 
@@ -19,7 +24,7 @@ class ContactManagementMixin:
         patronymic = get_patronymic()
         organization = get_organization()
         work_phone = get_work_phone()
-        personal_phone = get_personal_phone()
+        personal_phone = get_personal_phone(records=self.phonebook.records)
 
         contact = Contact(
             surname, name, patronymic, organization, work_phone, personal_phone
@@ -95,38 +100,42 @@ class ContactManagementMixin:
         new_surname = input(f"Новая фамилия (текущая: {contact.surname}): ")
         if new_surname and not validate_name(new_surname):
             print("Неверный формат фамилии.")
-            return
+            new_surname = get_surname()
 
         new_name = input(f"Новое имя (текущее: {contact.name}): ")
         if new_name and not validate_name(new_name):
             print("Неверный формат имени.")
-            return
+            new_name = get_name()
 
         new_patronymic = input(f"Новое отчество (текущее: {contact.patronymic}): ")
         if new_patronymic and not validate_name(new_patronymic):
             print("Неверный формат отчества.")
-            return
+            new_patronymic = get_patronymic()
 
         new_organization = input(
             f"Новая организация (текущая: {contact.organization}): "
         )
         if new_organization and not validate_organization(new_organization):
             print("Неверный формат названия организации.")
-            return
+            new_organization = get_organization()
 
         new_work_phone = input(
             f"Новый рабочий телефон (текущий: {contact.work_phone}): "
         )
-        if new_work_phone and not validate_phone_number(new_work_phone):
+        if new_work_phone and not validate_work_phone_number(new_work_phone):
             print("Неверный формат рабочего телефона.")
-            return
+            new_work_phone = get_work_phone()
 
-        new_personal_phone = input(
-            f"Новый личный телефон (текущий: {contact.personal_phone}): "
-        )
-        if new_personal_phone and not validate_phone_number(new_personal_phone):
-            print("Неверный формат личного телефона.")
-            return
+        while True:
+            new_personal_phone = input(
+                f"Новый личный телефон (текущий: {contact.personal_phone}): "
+            )
+            if new_personal_phone and not validate_personal_phone_number(
+                new_personal_phone, records=self.phonebook.records
+            ):
+                print("Неверный формат личного телефона.")
+            else:
+                break
 
         # Применение обновленных данных, сохраняя исходные значения для полей, которые не были изменены
         updated_contact = Contact(

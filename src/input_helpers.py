@@ -1,16 +1,22 @@
+from typing import List
+
+from classes.contact import Contact
 from validators import (
     validate_name,
     validate_organization,
-    validate_phone_number,
+    validate_personal_phone_number,
+    validate_work_phone_number,
     validtate_patronymic,
 )
 
 
-def _input_with_validation(prompt: str, validation_function, error_message: str) -> str:
+def _input_with_validation(
+    prompt: str, validation_function, error_message: str, **records
+) -> str:
     """Запрашивает ввод у пользователя до тех пор, пока ввод не пройдет проверку валидацией."""
     while True:
         value = input(prompt)
-        if validation_function(value):
+        if validation_function(value, **records):
             return value
         else:
             print(error_message)
@@ -51,12 +57,17 @@ def get_organization() -> str:
 def get_work_phone() -> str:
     """Возвращает рабочий телефон"""
     return _input_with_validation(
-        "Рабочий телефон: ", validate_phone_number, "Неверный формат рабочего телефона."
+        "Рабочий телефон: ",
+        validate_work_phone_number,
+        "Неверный формат рабочего телефона.",
     )
 
 
-def get_personal_phone() -> str:
+def get_personal_phone(records: List[Contact]) -> str:
     """Возвращает личный телефон"""
     return _input_with_validation(
-        "Личный телефон: ", validate_phone_number, "Неверный формат личного телефона."
+        "Личный телефон: ",
+        validate_personal_phone_number,
+        "Неверный формат личного телефона или номер есть уже в справочнике",
+        records=records,
     )
