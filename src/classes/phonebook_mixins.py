@@ -14,7 +14,7 @@ class AddContactMixin:
 class SearchContactMixin:
     """Миксин для поиска контактов по фамилии."""
 
-    def search_contact(self, surname: str) -> List[Contact]:
+    def search_contact_by_surname(self, surname: str) -> List[Contact]:
         """Возвращает список контактов, фамилия которых соответствует запросу."""
         return [
             contact
