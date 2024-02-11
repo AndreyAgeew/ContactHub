@@ -1,4 +1,9 @@
-from validators import validate_name, validate_organization, validate_phone_number, validtate_patronymic
+from validators import (
+    validate_name,
+    validate_organization,
+    validate_phone_number,
+    validtate_patronymic,
+)
 
 
 def _input_with_validation(prompt: str, validation_function, error_message: str) -> str:
