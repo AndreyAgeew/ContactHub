@@ -1,4 +1,4 @@
-from validators import validate_name, validate_organization, validate_phone_number
+from validators import validate_name, validate_organization, validate_phone_number, validtate_patronymic
 
 
 def _input_with_validation(prompt: str, validation_function, error_message: str) -> str:
@@ -29,7 +29,7 @@ def get_patronymic() -> str:
     """Возвращает отчество"""
     return _input_with_validation(
         "Отчество (если есть): ",
-        validate_name,
+        validtate_patronymic,
         "Отчество должно содержать только буквы.",
     )
 

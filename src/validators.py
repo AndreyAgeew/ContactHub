@@ -18,6 +18,14 @@ def validate_name(name: str) -> bool:
     return bool(re.match(pattern, name.strip()))
 
 
+def validtate_patronymic(patronymic: str) -> bool:
+    """Проверяет, что отчество содержит только буквы или пустое."""
+    if patronymic == "":
+        return True  # Допускаем пустую строку
+    pattern = r"^[A-Za-zА-Яа-яЁё]+$"
+    return bool(re.match(pattern, patronymic.strip()))
+
+
 def validate_surname(surname: str) -> bool:
     """Проверяет, что фамилия содержит только буквы, и не пустое."""
     return validate_name(surname)
